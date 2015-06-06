@@ -7,13 +7,13 @@ Lichtenstien Generator is as it says: a generator of Lictenstein style art from 
 
 If you have problems or questions then please contact me by emailing me at
 	
-		jonflynn@jfdesigner.co.uk. 
+		(jonflynn@jfdesigner.co.uk)
 
 ##WEB SITE
 	
 Visit my portfolio website for more of my work and interesting programs:
 
-		http://jfdesigner.co.uk/
+		(http://jfdesigner.co.uk/)
 
 ##NOTICE
 
