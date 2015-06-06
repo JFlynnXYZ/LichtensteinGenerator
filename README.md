@@ -18,3 +18,5 @@ http://jfdesigner.co.uk/
 ##NOTICE
 
 I most likely won't make any changes to the program from now as it's an  old assignment I completed for my course (Computer Visualisation & Animation) at the NCCA. The final version was published on 06/06/2015.
+
+Also, it has not been optimised at all so it will be slow with large images. Bare that in mine when using the program, if it takes forever it may have either crashed or is still taking its time.
