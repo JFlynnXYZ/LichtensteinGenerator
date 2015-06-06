@@ -1,0 +1,257 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module PILAddons</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>PILAddons</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///G:/lichtenstein%20art%20final/01_sourcecode/piladdons.py">g:\lichtenstein art final\01_sourcecode\piladdons.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;containing&nbsp;additional&nbsp;PIL&nbsp;features&nbsp;I&nbsp;have&nbsp;implemented.<br>
+&nbsp;<br>
+The&nbsp;idea&nbsp;behind&nbsp;this&nbsp;module&nbsp;is&nbsp;to&nbsp;contain&nbsp;useful&nbsp;functions&nbsp;I&nbsp;may&nbsp;use&nbsp;in<br>
+multiple&nbsp;PIL&nbsp;Image&nbsp;projects.&nbsp;This&nbsp;is&nbsp;very&nbsp;much&nbsp;a&nbsp;WIP&nbsp;module&nbsp;and&nbsp;will&nbsp;be&nbsp;<br>
+added&nbsp;to&nbsp;as&nbsp;I&nbsp;implement&nbsp;more&nbsp;features&nbsp;to&nbsp;the&nbsp;PIL&nbsp;library.<br>
+&nbsp;<br>
+Currently,&nbsp;I&nbsp;have&nbsp;added&nbsp;a&nbsp;function&nbsp;to&nbsp;create&nbsp;a&nbsp;Centre&nbsp;Point&nbsp;Circle&nbsp;<br>
+to&nbsp;the&nbsp;<a href="#ImageDraw">ImageDraw</a>&nbsp;module&nbsp;to&nbsp;make&nbsp;circle&nbsp;creation&nbsp;easier&nbsp;when&nbsp;having&nbsp;the<br>
+circle&nbsp;dependent&nbsp;on&nbsp;it's&nbsp;position&nbsp;but&nbsp;have&nbsp;varying&nbsp;sized&nbsp;radius.&nbsp;Since&nbsp;I<br>
+will&nbsp;be&nbsp;adding&nbsp;to&nbsp;<a href="#ImageDraw">ImageDraw</a>&nbsp;module&nbsp;here,&nbsp;I&nbsp;simply&nbsp;inherited&nbsp;the&nbsp;current<br>
+<a href="#ImageDraw">ImageDraw</a>.<a href="#ImageDraw">ImageDraw</a>&nbsp;to&nbsp;my&nbsp;<a href="#ImageDraw">ImageDraw</a>&nbsp;class&nbsp;and&nbsp;created&nbsp;a&nbsp;Draw&nbsp;function&nbsp;to<br>
+allow&nbsp;easy&nbsp;implementation.&nbsp;I&nbsp;have&nbsp;also&nbsp;added&nbsp;a&nbsp;PIL&nbsp;colour&nbsp;<a href="#Palette">Palette</a>&nbsp;for&nbsp;use<br>
+with&nbsp;'P'&nbsp;images.&nbsp;It's&nbsp;primary&nbsp;use&nbsp;is&nbsp;to&nbsp;create&nbsp;complete&nbsp;colour&nbsp;palettes&nbsp;to<br>
+be&nbsp;used&nbsp;with&nbsp;Image.putpalette(<a href="#Palette">Palette</a>.get_palette()).<br>
+&nbsp;<br>
+I&nbsp;have&nbsp;also&nbsp;added&nbsp;an&nbsp;adjacent&nbsp;pixels&nbsp;function&nbsp;which&nbsp;simply&nbsp;returns&nbsp;the&nbsp;<br>
+adjacent&nbsp;pixels&nbsp;to&nbsp;a&nbsp;specified&nbsp;pixel&nbsp;and&nbsp;also&nbsp;added&nbsp;a&nbsp;pixel&nbsp;generator&nbsp;so&nbsp;<br>
+that&nbsp;all&nbsp;pixels&nbsp;in&nbsp;an&nbsp;image&nbsp;can&nbsp;be&nbsp;iterated&nbsp;over&nbsp;with&nbsp;edge&nbsp;pixels&nbsp;added&nbsp;or<br>
+removed&nbsp;as&nbsp;required.&nbsp;It&nbsp;also&nbsp;contains&nbsp;a&nbsp;function&nbsp;to&nbsp;convert&nbsp;an&nbsp;RGBA's&nbsp;alpha&nbsp;<br>
+channel&nbsp;to&nbsp;a&nbsp;grayscale&nbsp;image<br>
+&nbsp;<br>
+Here&nbsp;are&nbsp;some&nbsp;examples&nbsp;of&nbsp;how&nbsp;the&nbsp;code&nbsp;works:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;from&nbsp;PIL&nbsp;import&nbsp;Image<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;img&nbsp;=&nbsp;Image.new('RGB',&nbsp;(500,500))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;drw&nbsp;=&nbsp;<a href="#-Draw">Draw</a>(img)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;pix&nbsp;=&nbsp;img.load()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;colRatio&nbsp;=&nbsp;255.0/img.size[0]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;for&nbsp;x,y&nbsp;in&nbsp;<a href="#-pixel_generator">pixel_generator</a>(*img.size,&nbsp;edgeW=15,&nbsp;edgeH=15):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pix[x,y]&nbsp;=&nbsp;(int(x*colRatio),0,int(y*colRatio))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;for&nbsp;x&nbsp;in&nbsp;xrange(40,&nbsp;img.size[0],&nbsp;60):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;y&nbsp;in&nbsp;xrange(40,&nbsp;img.size[1],&nbsp;60):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i,j&nbsp;in&nbsp;<a href="#-adjacent_pixels">adjacent_pixels</a>(x,y):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pix[i,j]&nbsp;=&nbsp;(int(i*colRatio),int(j*colRatio),128)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;drw.cp_circle((250,250),&nbsp;100,&nbsp;(0,255,255),&nbsp;(0,0,0))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;rgb&nbsp;=&nbsp;<a href="#Palette">Palette</a>((0,0,0),(255,255,255),(255,0,255),(255,0,0),(0,0,255))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;rgb(255,255,0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(255,&nbsp;255,&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;rgb(0,255,255)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(0,&nbsp;255,&nbsp;255)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;rgb.get_palette()[:9]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[0,&nbsp;0,&nbsp;0,&nbsp;255,&nbsp;255,&nbsp;255,&nbsp;255,&nbsp;0,&nbsp;255]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;qImg&nbsp;=&nbsp;img.convert('P',&nbsp;palette=Image.ADAPTIVE,&nbsp;colors=len(rgb.palette))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;qImg.putpalette(rgb.get_palette(sort=True))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;img.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;qImg.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+To&nbsp;test/execute&nbsp;the&nbsp;examples&nbsp;in&nbsp;the&nbsp;module&nbsp;documentation&nbsp;make&nbsp;sure&nbsp;that&nbsp;<br>
+you&nbsp;have&nbsp;imported&nbsp;the&nbsp;PILAddons&nbsp;module&nbsp;and&nbsp;do&nbsp;the&nbsp;following:<br>
+import&nbsp;doctest<br>
+nfail,&nbsp;ntests&nbsp;=&nbsp;doctest.testmod(PILAddons)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="PIL.Image.html">PIL.Image</a><br>
+</td><td width="25%" valign=top><a href="colour.html">colour</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="PIL.ImageDraw.html#ImageDraw">PIL.ImageDraw.ImageDraw</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="PILAddons.html#ImageDraw">ImageDraw</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="PILAddons.html#Palette">Palette</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ImageDraw">class <strong>ImageDraw</strong></a>(<a href="PIL.ImageDraw.html#ImageDraw">PIL.ImageDraw.ImageDraw</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="ImageDraw-cp_circle"><strong>cp_circle</strong></a>(self, cpxy, rad, fill<font color="#909090">=None</font>, outline<font color="#909090">=None</font>)</dt><dd><tt>Draws&nbsp;a&nbsp;circle&nbsp;from&nbsp;a&nbsp;centre&nbsp;point&nbsp;with&nbsp;the&nbsp;specified&nbsp;radius<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cpxy&nbsp;[tuple][list]&nbsp;&nbsp;&nbsp;:&nbsp;A&nbsp;two&nbsp;tuple&nbsp;of&nbsp;the&nbsp;pixel&nbsp;location&nbsp;for&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;centre&nbsp;point&nbsp;of&nbsp;the&nbsp;circle&nbsp;on&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rad&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;radius&nbsp;of&nbsp;the&nbsp;circle.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;fill&nbsp;[PIL&nbsp;colour]&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Is&nbsp;a&nbsp;valid&nbsp;PIL&nbsp;readable&nbsp;colour&nbsp;for&nbsp;the&nbsp;fill&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;the&nbsp;circle.&nbsp;This&nbsp;can&nbsp;be&nbsp;any&nbsp;colour&nbsp;used&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;the&nbsp;ImageColor&nbsp;module.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;outline&nbsp;[PIL&nbsp;colour]&nbsp;:&nbsp;Is&nbsp;a&nbsp;valid&nbsp;PIL&nbsp;readable&nbsp;colour&nbsp;for&nbsp;a&nbsp;single&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stroke&nbsp;outline&nbsp;of&nbsp;the&nbsp;circle.&nbsp;This&nbsp;can&nbsp;be&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any&nbsp;colour&nbsp;used&nbsp;by&nbsp;the&nbsp;ImageColor&nbsp;module.<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Creates&nbsp;a&nbsp;circle&nbsp;with&nbsp;the&nbsp;set&nbsp;radius&nbsp;'rad'&nbsp;from&nbsp;the&nbsp;centre&nbsp;point&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'cpxy'&nbsp;with&nbsp;the&nbsp;set&nbsp;fill&nbsp;and&nbsp;outline&nbsp;colours.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="PIL.ImageDraw.html#ImageDraw">PIL.ImageDraw.ImageDraw</a>:<br>
+<dl><dt><a name="ImageDraw-__init__"><strong>__init__</strong></a>(self, im, mode<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-arc"><strong>arc</strong></a>(self, xy, start, end, fill<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-bitmap"><strong>bitmap</strong></a>(self, xy, bitmap, fill<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-chord"><strong>chord</strong></a>(self, xy, start, end, fill<font color="#909090">=None</font>, outline<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-ellipse"><strong>ellipse</strong></a>(self, xy, fill<font color="#909090">=None</font>, outline<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-getfont"><strong>getfont</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ImageDraw-line"><strong>line</strong></a>(self, xy, fill<font color="#909090">=None</font>, width<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-pieslice"><strong>pieslice</strong></a>(self, xy, start, end, fill<font color="#909090">=None</font>, outline<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-point"><strong>point</strong></a>(self, xy, fill<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-polygon"><strong>polygon</strong></a>(self, xy, fill<font color="#909090">=None</font>, outline<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-rectangle"><strong>rectangle</strong></a>(self, xy, fill<font color="#909090">=None</font>, outline<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-setfill"><strong>setfill</strong></a>(self, onoff)</dt></dl>
+
+<dl><dt><a name="ImageDraw-setfont"><strong>setfont</strong></a>(self, font)</dt></dl>
+
+<dl><dt><a name="ImageDraw-setink"><strong>setink</strong></a>(self, ink)</dt></dl>
+
+<dl><dt><a name="ImageDraw-shape"><strong>shape</strong></a>(self, shape, fill<font color="#909090">=None</font>, outline<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-text"><strong>text</strong></a>(self, xy, text, fill<font color="#909090">=None</font>, font<font color="#909090">=None</font>, anchor<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="ImageDraw-textsize"><strong>textsize</strong></a>(self, text, font<font color="#909090">=None</font>)</dt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Palette">class <strong>Palette</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Stores&nbsp;RGB&nbsp;colours&nbsp;that&nbsp;can&nbsp;be&nbsp;used&nbsp;for&nbsp;a&nbsp;PIL&nbsp;Image&nbsp;colour&nbsp;palette.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;args&nbsp;[tuple][list]&nbsp;:&nbsp;(r,g,b)&nbsp;3&nbsp;tuple/list&nbsp;values&nbsp;storing&nbsp;RGB&nbsp;values.&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contains&nbsp;the&nbsp;first&nbsp;colours&nbsp;you&nbsp;wish&nbsp;to&nbsp;store&nbsp;into<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;palette.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;palette&nbsp;[list]&nbsp;:&nbsp;Stores&nbsp;the&nbsp;RGB&nbsp;values&nbsp;for&nbsp;the&nbsp;palette.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Palette-__call__"><strong>__call__</strong></a>(self, r, g, b)</dt><dd><tt>Maps&nbsp;RGB&nbsp;colours&nbsp;to&nbsp;the&nbsp;colour&nbsp;index.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;[int]&nbsp;:&nbsp;The&nbsp;value&nbsp;of&nbsp;the&nbsp;red&nbsp;channel.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;g&nbsp;[int]&nbsp;:&nbsp;The&nbsp;value&nbsp;of&nbsp;the&nbsp;green&nbsp;channel.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;[int]&nbsp;:&nbsp;The&nbsp;value&nbsp;of&nbsp;the&nbsp;blue&nbsp;channel.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Checks&nbsp;the&nbsp;RGB&nbsp;value&nbsp;and&nbsp;stores&nbsp;it&nbsp;into&nbsp;the&nbsp;palette&nbsp;if&nbsp;there&nbsp;is&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;space.</tt></dd></dl>
+
+<dl><dt><a name="Palette-__init__"><strong>__init__</strong></a>(self, *args)</dt></dl>
+
+<dl><dt><a name="Palette-get_complete_palette"><strong>get_complete_palette</strong></a>(self, sort<font color="#909090">=False</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;complete&nbsp;flattend&nbsp;version&nbsp;of&nbsp;the&nbsp;palette&nbsp;to&nbsp;be&nbsp;read&nbsp;by&nbsp;PIL.&nbsp;<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sort&nbsp;[bool]&nbsp;:&nbsp;If&nbsp;True,&nbsp;then&nbsp;the&nbsp;RGB&nbsp;values&nbsp;will&nbsp;be&nbsp;ordered&nbsp;by&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highest&nbsp;value&nbsp;RGB&nbsp;first.<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;list&nbsp;of&nbsp;all&nbsp;the&nbsp;RGB&nbsp;values&nbsp;stored&nbsp;in&nbsp;the&nbsp;palette&nbsp;along&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;all&nbsp;the&nbsp;empty&nbsp;colours&nbsp;that&nbsp;are&nbsp;stored&nbsp;in&nbsp;a&nbsp;'P'&nbsp;image&nbsp;without<br>
+&nbsp;&nbsp;&nbsp;&nbsp;being&nbsp;grouped&nbsp;by&nbsp;tuples.&nbsp;This&nbsp;is&nbsp;a&nbsp;series&nbsp;of&nbsp;black&nbsp;RGB&nbsp;colours.</tt></dd></dl>
+
+<dl><dt><a name="Palette-get_palette"><strong>get_palette</strong></a>(self, sort<font color="#909090">=False</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;flattend&nbsp;version&nbsp;of&nbsp;the&nbsp;palette&nbsp;to&nbsp;be&nbsp;read&nbsp;by&nbsp;PIL.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sort&nbsp;[bool]&nbsp;:&nbsp;If&nbsp;True,&nbsp;then&nbsp;the&nbsp;RGB&nbsp;values&nbsp;will&nbsp;be&nbsp;ordered&nbsp;by&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highest&nbsp;value&nbsp;RGB&nbsp;first.<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;list&nbsp;of&nbsp;all&nbsp;the&nbsp;RGB&nbsp;values&nbsp;stored&nbsp;in&nbsp;the&nbsp;palette&nbsp;without&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;being&nbsp;grouped&nbsp;by&nbsp;tuples.</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-Draw"><strong>Draw</strong></a>(im, mode<font color="#909090">=None</font>)</dt><dd><tt>A&nbsp;simple&nbsp;2D&nbsp;drawing&nbsp;interface&nbsp;for&nbsp;PIL&nbsp;images.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;im&nbsp;[PIL&nbsp;Image]&nbsp;:&nbsp;The&nbsp;image&nbsp;to&nbsp;draw&nbsp;in.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mode&nbsp;[str]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Optional&nbsp;mode&nbsp;to&nbsp;use&nbsp;for&nbsp;color&nbsp;values.&nbsp;&nbsp;For&nbsp;RGB<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;images,&nbsp;this&nbsp;argument&nbsp;can&nbsp;be&nbsp;RGB&nbsp;or&nbsp;RGBA&nbsp;(to&nbsp;blend&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drawing&nbsp;into&nbsp;the&nbsp;image).&nbsp;&nbsp;For&nbsp;all&nbsp;other&nbsp;modes,&nbsp;this&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;argument&nbsp;must&nbsp;be&nbsp;the&nbsp;same&nbsp;as&nbsp;the&nbsp;image&nbsp;mode.&nbsp;&nbsp;If&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;omitted,&nbsp;the&nbsp;mode&nbsp;defaults&nbsp;to&nbsp;the&nbsp;mode&nbsp;of&nbsp;the&nbsp;image.</tt></dd></dl>
+ <dl><dt><a name="-adjacent_pixels"><strong>adjacent_pixels</strong></a>(x, y)</dt><dd><tt>Creates&nbsp;a&nbsp;generator&nbsp;for&nbsp;the&nbsp;neighbouring&nbsp;pixels&nbsp;of&nbsp;a&nbsp;set&nbsp;pixel&nbsp;on&nbsp;an&nbsp;<br>
+image.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;[int]&nbsp;:&nbsp;The&nbsp;x&nbsp;co-ordinate&nbsp;of&nbsp;the&nbsp;pixel&nbsp;on&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;[int]&nbsp;:&nbsp;The&nbsp;y&nbsp;co-ordinate&nbsp;of&nbsp;the&nbsp;pixel&nbsp;on&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Yields&nbsp;each&nbsp;pixel&nbsp;position&nbsp;surrounding&nbsp;the&nbsp;current&nbsp;pixel&nbsp;at&nbsp;(x,y).</tt></dd></dl>
+ <dl><dt><a name="-convert_rgba_to_mask"><strong>convert_rgba_to_mask</strong></a>(img)</dt><dd><tt>Takes&nbsp;the&nbsp;alpha&nbsp;composite&nbsp;of&nbsp;an&nbsp;RGBA&nbsp;image&nbsp;and&nbsp;turns&nbsp;it&nbsp;into&nbsp;a&nbsp;grayscale<br>
+mask&nbsp;image.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;[PIL&nbsp;Image]&nbsp;:&nbsp;A&nbsp;PIL&nbsp;RGBA&nbsp;Image&nbsp;object<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;grayscale&nbsp;image&nbsp;with&nbsp;each&nbsp;of&nbsp;the&nbsp;values&nbsp;representing&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alpha&nbsp;channel&nbsp;of&nbsp;the&nbsp;RGBA&nbsp;image&nbsp;'img'.</tt></dd></dl>
+ <dl><dt><a name="-pixel_generator"><strong>pixel_generator</strong></a>(width, height, edgeW<font color="#909090">=0</font>, edgeH<font color="#909090">=0</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;generator&nbsp;for&nbsp;all&nbsp;the&nbsp;pixel&nbsp;locations&nbsp;of&nbsp;an&nbsp;image.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;width&nbsp;[int]&nbsp;&nbsp;:&nbsp;The&nbsp;width&nbsp;of&nbsp;the&nbsp;image&nbsp;or&nbsp;number&nbsp;of&nbsp;pixels&nbsp;along&nbsp;the&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;axis.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;height&nbsp;[int]&nbsp;:&nbsp;The&nbsp;height&nbsp;of&nbsp;the&nbsp;image&nbsp;or&nbsp;number&nbsp;of&nbsp;pixels&nbsp;along&nbsp;the&nbsp;y<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;axis.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edgeW&nbsp;[int]&nbsp;&nbsp;:&nbsp;Used&nbsp;to&nbsp;set&nbsp;the&nbsp;width&nbsp;edge&nbsp;offset&nbsp;for&nbsp;the&nbsp;pixel&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generator.&nbsp;If&nbsp;this&nbsp;is&nbsp;a&nbsp;non-zero&nbsp;value&nbsp;then&nbsp;this&nbsp;number&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;pixels&nbsp;from&nbsp;the&nbsp;edge&nbsp;will/will&nbsp;not&nbsp;be&nbsp;included&nbsp;in&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generator.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edgeH&nbsp;[int]&nbsp;&nbsp;:&nbsp;Used&nbsp;to&nbsp;set&nbsp;the&nbsp;height&nbsp;edge&nbsp;offset&nbsp;for&nbsp;the&nbsp;pixel&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generator.&nbsp;If&nbsp;this&nbsp;is&nbsp;a&nbsp;non-zero&nbsp;value&nbsp;then&nbsp;this&nbsp;number&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;pixels&nbsp;from&nbsp;the&nbsp;edge&nbsp;will/will&nbsp;not&nbsp;be&nbsp;included&nbsp;in&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generator.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Yields&nbsp;each&nbsp;pixel&nbsp;in&nbsp;the&nbsp;image&nbsp;with&nbsp;the&nbsp;set&nbsp;'width'&nbsp;and&nbsp;'height'&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;will&nbsp;include&nbsp;or&nbsp;exclude&nbsp;the&nbsp;set&nbsp;edge&nbsp;pixels&nbsp;from&nbsp;'edgeW'&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'edgeH'.</tt></dd></dl>
+</td></tr></table>
+</body></html>

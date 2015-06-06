@@ -1,0 +1,107 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module lichtenstein</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>lichtenstein</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///G:/lichtenstein%20art%20final/01_sourcecode/lichtenstein.py">g:\lichtenstein art final\01_sourcecode\lichtenstein.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;for&nbsp;creating&nbsp;Roy&nbsp;Lichtenstein&nbsp;style&nbsp;images&nbsp;generator&nbsp;which&nbsp;creates<br>
+images&nbsp;from&nbsp;a&nbsp;PIL&nbsp;Image.<br>
+&nbsp;<br>
+Each&nbsp;image&nbsp;is&nbsp;created&nbsp;using&nbsp;3&nbsp;different&nbsp;modules&nbsp;consisting&nbsp;of&nbsp;halftoning,<br>
+edgeDetect&nbsp;and&nbsp;quantize.&nbsp;They&nbsp;are&nbsp;all&nbsp;used&nbsp;together&nbsp;to&nbsp;create&nbsp;the&nbsp;final<br>
+product.<br>
+&nbsp;<br>
+Here&nbsp;is&nbsp;an&nbsp;example&nbsp;of&nbsp;how&nbsp;the&nbsp;code&nbsp;works:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;f&nbsp;=&nbsp;'lena.png'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.open(f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;except&nbsp;IOError:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.new('RGB',&nbsp;(512,512))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pix&nbsp;=&nbsp;img.load()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drw&nbsp;=&nbsp;pila.Draw(img)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colRatio&nbsp;=&nbsp;255.0/img.size[0]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;x,y&nbsp;in&nbsp;pila.pixel_generator(*img.size,&nbsp;edgeW=15,&nbsp;edgeH=15):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pix[x,y]&nbsp;=&nbsp;(int(x*colRatio),0,int(y*colRatio))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drw.cp_circle((250,250),&nbsp;100,&nbsp;(0,255,255))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-lichtenstein">lichtenstein</a>(img).show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;nCols&nbsp;=&nbsp;[(0,0,0),(255,255,255),(239,228,176),(128,0,128),(228,122,121)]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-lichtenstein">lichtenstein</a>(img,&nbsp;nCols,&nbsp;qtNCols=6,&nbsp;edColour=(255,0,0),&nbsp;htBox=15).show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;nCols2&nbsp;=&nbsp;[(83,31,72),(255,241,191),(38,22,184),(233,95,113),(190,159,163)]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;htCol&nbsp;=&nbsp;(ht.AVERAGE_COLOUR,&nbsp;(80,50,90))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;edCol&nbsp;=&nbsp;(12,163,243)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-lichtenstein">lichtenstein</a>(img,&nbsp;nCols2,&nbsp;qtNCols=16,&nbsp;edColour=edCol,&nbsp;htColour=htCol).show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;<br>
+&nbsp;<br>
+To&nbsp;test/execute&nbsp;the&nbsp;examples&nbsp;in&nbsp;the&nbsp;module&nbsp;documentation&nbsp;make&nbsp;sure&nbsp;that&nbsp;<br>
+you&nbsp;have&nbsp;imported&nbsp;the&nbsp;lichtenstein&nbsp;module&nbsp;and&nbsp;do&nbsp;the&nbsp;following:<br>
+import&nbsp;doctest<br>
+nfail,&nbsp;ntests&nbsp;=&nbsp;doctest.testmod(lichtenstein)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="PIL.Image.html">PIL.Image</a><br>
+<a href="PIL.ImageOps.html">PIL.ImageOps</a><br>
+</td><td width="25%" valign=top><a href="edgeDetect.html">edgeDetect</a><br>
+<a href="halftoning.html">halftoning</a><br>
+</td><td width="25%" valign=top><a href="PILAddons.html">PILAddons</a><br>
+<a href="quantize.html">quantize</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-lichtenstein"><strong>lichtenstein</strong></a>(img, qtNewCols<font color="#909090">=((0, 0, 0), (255, 255, 255), (190, 0, 0), (0, 16, 115), (248, 196, 0))</font>, qtSigma<font color="#909090">=4</font>, qtNCols<font color="#909090">=8</font>, edSigma<font color="#909090">=1.3999999999999999</font>, edThresH<font color="#909090">=0.20000000000000001</font>, edThresL<font color="#909090">=0.10000000000000001</font>, edColour<font color="#909090">=(0, 0, 0)</font>, htBox<font color="#909090">=8</font>, htColour<font color="#909090">=('AVERAGE_COLOUR', (255, 255, 255))</font>, htCRatio<font color="#909090">=1</font>, aalias<font color="#909090">=2</font>)</dt><dd><tt>Generates&nbsp;a&nbsp;Roy&nbsp;Lichtenstein&nbsp;RGB&nbsp;PIL&nbsp;image&nbsp;from&nbsp;a&nbsp;PIL&nbsp;image.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;[PIL&nbsp;Image]&nbsp;&nbsp;&nbsp;:&nbsp;a&nbsp;PIL&nbsp;Image&nbsp;object.&nbsp;Best&nbsp;results&nbsp;are&nbsp;created&nbsp;from<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RGB&nbsp;images.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;qtNewCols&nbsp;[tuple]&nbsp;:&nbsp;a&nbsp;tuple&nbsp;of&nbsp;3-tuple&nbsp;RGB&nbsp;values&nbsp;which&nbsp;will&nbsp;be&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;colours&nbsp;for&nbsp;the&nbsp;quantize&nbsp;process<br>
+&nbsp;&nbsp;&nbsp;&nbsp;qtSigma&nbsp;[float]&nbsp;&nbsp;&nbsp;:&nbsp;the&nbsp;magnitude&nbsp;for&nbsp;the&nbsp;gaussian&nbsp;blur&nbsp;used&nbsp;to&nbsp;reduce<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;noise&nbsp;for&nbsp;the&nbsp;quantize&nbsp;process<br>
+&nbsp;&nbsp;&nbsp;&nbsp;qtNCols&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;the&nbsp;number&nbsp;of&nbsp;colours&nbsp;used&nbsp;to&nbsp;reduce&nbsp;the&nbsp;image&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;the&nbsp;quantize&nbsp;process<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edSigma&nbsp;[float]&nbsp;&nbsp;&nbsp;:&nbsp;the&nbsp;magnitude&nbsp;for&nbsp;the&nbsp;gaussain&nbsp;blur&nbsp;used&nbsp;to&nbsp;recduce<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;noise&nbsp;for&nbsp;the&nbsp;edge&nbsp;detect&nbsp;process<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edThresH&nbsp;[float]&nbsp;&nbsp;:&nbsp;the&nbsp;higher&nbsp;threshold&nbsp;boundry&nbsp;used&nbsp;for&nbsp;edge&nbsp;linking<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;normalisation&nbsp;for&nbsp;the&nbsp;edge&nbsp;detect&nbsp;process<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edThresL&nbsp;[float]&nbsp;&nbsp;:&nbsp;the&nbsp;lower&nbsp;threshold&nbsp;boundry&nbsp;used&nbsp;for&nbsp;edge&nbsp;linking<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;normalisation&nbsp;for&nbsp;the&nbsp;edge&nbsp;detect&nbsp;process<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edColour&nbsp;[tuple]&nbsp;&nbsp;:&nbsp;the&nbsp;RGB&nbsp;colour&nbsp;for&nbsp;the&nbsp;edges&nbsp;created&nbsp;by&nbsp;the&nbsp;edge<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detect&nbsp;process<br>
+&nbsp;&nbsp;&nbsp;&nbsp;htBox&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;the&nbsp;halftoning&nbsp;box&nbsp;width&nbsp;and&nbsp;height&nbsp;used&nbsp;for&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area&nbsp;of&nbsp;pixels&nbsp;a&nbsp;sample&nbsp;of&nbsp;luminosity&nbsp;values<br>
+&nbsp;&nbsp;&nbsp;&nbsp;htColour&nbsp;[tuple]&nbsp;&nbsp;:&nbsp;a&nbsp;2-tuple&nbsp;containing&nbsp;the&nbsp;foreground&nbsp;colour&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background&nbsp;colour&nbsp;for&nbsp;the&nbsp;halftoning&nbsp;circles.&nbsp;Must<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;RGB&nbsp;values&nbsp;or&nbsp;'ht.AVERAGE_COLOUR'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;htCRatio&nbsp;[float]&nbsp;&nbsp;:&nbsp;the&nbsp;circle&nbsp;ratio&nbsp;used&nbsp;for&nbsp;drawing&nbsp;the&nbsp;circles&nbsp;in&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;halftoning&nbsp;process&nbsp;so&nbsp;that&nbsp;they&nbsp;can&nbsp;be&nbsp;overall&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bigger&nbsp;or&nbsp;smaller&nbsp;in&nbsp;scale<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aalias&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;anti-alias&nbsp;amount&nbsp;for&nbsp;the&nbsp;edges&nbsp;of&nbsp;all&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generates&nbsp;a&nbsp;Roy&nbsp;Lichtenstein&nbsp;image&nbsp;and&nbsp;returns&nbsp;an&nbsp;RGB&nbsp;PIL&nbsp;image.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>DEFAULT_COLOURS</strong> = ((0, 0, 0), (255, 255, 255), (190, 0, 0), (0, 16, 115), (248, 196, 0))</td></tr></table>
+</body></html>

@@ -1,0 +1,104 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module quantize</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>quantize</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///G:/lichtenstein%20art%20final/01_sourcecode/quantize.py">g:\lichtenstein art final\01_sourcecode\quantize.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;containing&nbsp;Colour&nbsp;Quantization&nbsp;for&nbsp;reducing&nbsp;an&nbsp;images&nbsp;down&nbsp;to&nbsp;a<br>
+selection&nbsp;of&nbsp;set&nbsp;colours.<br>
+&nbsp;<br>
+The&nbsp;idea&nbsp;behind&nbsp;this&nbsp;module&nbsp;is&nbsp;to&nbsp;replace&nbsp;the&nbsp;colours&nbsp;of&nbsp;an&nbsp;image&nbsp;with<br>
+the&nbsp;most&nbsp;likely&nbsp;matches&nbsp;from&nbsp;a&nbsp;set&nbsp;of&nbsp;colours&nbsp;specified&nbsp;by&nbsp;the&nbsp;user.&nbsp;This<br>
+module&nbsp;works&nbsp;in&nbsp;conjunction&nbsp;with&nbsp;PIL&nbsp;as&nbsp;it's&nbsp;means&nbsp;for&nbsp;editing&nbsp;image&nbsp;<br>
+colours.<br>
+&nbsp;<br>
+Currently,&nbsp;the&nbsp;module&nbsp;only&nbsp;works&nbsp;with&nbsp;RGB&nbsp;colours&nbsp;currently&nbsp;but&nbsp;the&nbsp;<br>
+use&nbsp;of&nbsp;other&nbsp;PIL&nbsp;colour&nbsp;types&nbsp;will&nbsp;be&nbsp;added&nbsp;in&nbsp;the&nbsp;future,&nbsp;such&nbsp;as&nbsp;HSV,<br>
+RGBA,&nbsp;HEX&nbsp;and&nbsp;PIL&nbsp;worded&nbsp;colours.&nbsp;The&nbsp;functions&nbsp;in&nbsp;the&nbsp;module&nbsp;consist&nbsp;of<br>
+calculating&nbsp;the&nbsp;closeness&nbsp;of&nbsp;a&nbsp;colour&nbsp;to&nbsp;another&nbsp;and&nbsp;switching&nbsp;them&nbsp;using<br>
+colour&nbsp;switch,&nbsp;and&nbsp;the&nbsp;Colour&nbsp;Quantization&nbsp;function&nbsp;itself.<br>
+&nbsp;<br>
+Here&nbsp;are&nbsp;some&nbsp;examples&nbsp;of&nbsp;how&nbsp;the&nbsp;code&nbsp;works:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;curCols&nbsp;=&nbsp;[(98,186,25),&nbsp;(50,0,69),&nbsp;(245,89,12),&nbsp;(69,156,102),&nbsp;(89,56,71),&nbsp;(89,58,&nbsp;205),&nbsp;(5,5,20)]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;newCols&nbsp;=&nbsp;[(0,0,0),&nbsp;(255,255,255),&nbsp;(255,0,0),&nbsp;(0,0,255),&nbsp;(255,255,0)]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-colour_switch">colour_switch</a>(curCols,&nbsp;newCols)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[(255,&nbsp;255,&nbsp;0),&nbsp;(0,&nbsp;0,&nbsp;255),&nbsp;(255,&nbsp;0,&nbsp;0),&nbsp;(69,&nbsp;156,&nbsp;102),&nbsp;(89,&nbsp;56,&nbsp;71),&nbsp;(255,&nbsp;255,&nbsp;255),&nbsp;(0,&nbsp;0,&nbsp;0)]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;f&nbsp;=&nbsp;'lena.png'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.open(f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;except&nbsp;IOError:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.new('RGB',&nbsp;(500,500))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drw&nbsp;=&nbsp;ImageDraw.Draw(img)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i,x&nbsp;in&nbsp;enumerate(xrange(40,&nbsp;img.size[0],&nbsp;70)):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;y&nbsp;in&nbsp;xrange(40,&nbsp;img.size[1],&nbsp;70):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drw.rectangle((x-30,y-30,x,y),&nbsp;fill=curCols[i])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;quantImg&nbsp;=&nbsp;<a href="#-quantize">quantize</a>(img,&nbsp;newCols,&nbsp;nCols=len(curCols)+1,&nbsp;sigma=1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;img.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;quantImg.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+To&nbsp;test/execute&nbsp;the&nbsp;examples&nbsp;in&nbsp;the&nbsp;module&nbsp;documentation&nbsp;make&nbsp;sure&nbsp;that&nbsp;<br>
+you&nbsp;have&nbsp;imported&nbsp;the&nbsp;quantize&nbsp;module&nbsp;and&nbsp;do&nbsp;the&nbsp;following:<br>
+import&nbsp;doctest<br>
+nfail,&nbsp;ntests&nbsp;=&nbsp;doctest.testmod(quantize)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="PIL.Image.html">PIL.Image</a><br>
+</td><td width="25%" valign=top><a href="PIL.ImageDraw.html">PIL.ImageDraw</a><br>
+</td><td width="25%" valign=top><a href="PIL.ImageFilter.html">PIL.ImageFilter</a><br>
+</td><td width="25%" valign=top><a href="colour.html">colour</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-colour_switch"><strong>colour_switch</strong></a>(curC, newC)</dt><dd><tt>Switches&nbsp;the&nbsp;closest&nbsp;matching&nbsp;colours&nbsp;from&nbsp;one&nbsp;list&nbsp;of&nbsp;colours&nbsp;to&nbsp;<br>
+another,&nbsp;creating&nbsp;a&nbsp;combined&nbsp;palette&nbsp;of&nbsp;colours.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;curC&nbsp;[list]&nbsp;:&nbsp;a&nbsp;list&nbsp;of&nbsp;3-tuple&nbsp;RGB&nbsp;colours.&nbsp;These&nbsp;are&nbsp;colours&nbsp;that&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;are&nbsp;from&nbsp;the&nbsp;current&nbsp;image&nbsp;and&nbsp;will&nbsp;be&nbsp;switched&nbsp;out&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;closest&nbsp;matching&nbsp;colour&nbsp;from&nbsp;'newC'.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;newC&nbsp;[list]&nbsp;:&nbsp;a&nbsp;list&nbsp;of&nbsp;3-tuple&nbsp;RGB&nbsp;colours.&nbsp;These&nbsp;are&nbsp;the&nbsp;colours&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;which&nbsp;will&nbsp;replace&nbsp;there&nbsp;closest&nbsp;matching&nbsp;counter&nbsp;colour<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;the&nbsp;list&nbsp;'curC'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;new&nbsp;combined&nbsp;list&nbsp;of&nbsp;colours&nbsp;with&nbsp;all&nbsp;the&nbsp;'newC'&nbsp;colours<br>
+&nbsp;&nbsp;&nbsp;&nbsp;replacing&nbsp;there&nbsp;closest&nbsp;matching&nbsp;colours&nbsp;from&nbsp;'curC'.&nbsp;If&nbsp;there&nbsp;are&nbsp;less<br>
+&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;colours&nbsp;compared&nbsp;to&nbsp;current&nbsp;colours,&nbsp;then&nbsp;any&nbsp;colours&nbsp;which&nbsp;have<br>
+&nbsp;&nbsp;&nbsp;&nbsp;no&nbsp;close&nbsp;new&nbsp;colour&nbsp;counterpart&nbsp;will&nbsp;be&nbsp;left&nbsp;in&nbsp;the&nbsp;colours.</tt></dd></dl>
+ <dl><dt><a name="-quantize"><strong>quantize</strong></a>(img, newCols, nCols<font color="#909090">=8</font>, sigma<font color="#909090">=4</font>, aalias<font color="#909090">=4</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;colour&nbsp;quantize&nbsp;image&nbsp;from&nbsp;a&nbsp;PIL&nbsp;Image&nbsp;with&nbsp;new&nbsp;colours.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;[PIL&nbsp;Image]&nbsp;:&nbsp;A&nbsp;PIL&nbsp;image&nbsp;object.&nbsp;Any&nbsp;colour&nbsp;mode&nbsp;can&nbsp;be&nbsp;used&nbsp;but<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RGB&nbsp;is&nbsp;preferred.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;newCols&nbsp;[list]&nbsp;&nbsp;:&nbsp;A&nbsp;list&nbsp;of&nbsp;3-tuple&nbsp;RGB&nbsp;colours&nbsp;to&nbsp;replace&nbsp;there&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;closest&nbsp;matching&nbsp;colour&nbsp;on&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nCols&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;number&nbsp;of&nbsp;colours&nbsp;that&nbsp;the&nbsp;image&nbsp;will&nbsp;be&nbsp;reduced<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to.&nbsp;This&nbsp;number&nbsp;must&nbsp;be&nbsp;higher&nbsp;then&nbsp;the&nbsp;length&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'newCols'.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sigma&nbsp;[float]&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;magnitude&nbsp;of&nbsp;the&nbsp;gaussian&nbsp;blur&nbsp;used&nbsp;on&nbsp;the&nbsp;image<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;de-noise&nbsp;the&nbsp;image&nbsp;for&nbsp;a&nbsp;smoother&nbsp;result.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aalias&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;anti-alias&nbsp;amount&nbsp;for&nbsp;the&nbsp;edges&nbsp;of&nbsp;the&nbsp;pixels.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;an&nbsp;RGB&nbsp;PIL&nbsp;image&nbsp;with&nbsp;the&nbsp;number&nbsp;of&nbsp;colours&nbsp;'nCols',&nbsp;with&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colours&nbsp;from&nbsp;'newCols'&nbsp;replacing&nbsp;their&nbsp;closest&nbsp;matches&nbsp;from&nbsp;the&nbsp;image,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;well&nbsp;as&nbsp;a&nbsp;noise&nbsp;reduction&nbsp;of&nbsp;'sigma'&nbsp;and&nbsp;anti&nbsp;alias&nbsp;of&nbsp;'aalias'.</tt></dd></dl>
+</td></tr></table>
+</body></html>

@@ -1,0 +1,212 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module edgeDetect</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>edgeDetect</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///G:/lichtenstein%20art%20final/01_sourcecode/edgedetect.py">g:\lichtenstein art final\01_sourcecode\edgedetect.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;containing&nbsp;edge&nbsp;detect&nbsp;methods&nbsp;in&nbsp;the&nbsp;PIL&nbsp;library.<br>
+&nbsp;<br>
+The&nbsp;idea&nbsp;behind&nbsp;this&nbsp;module&nbsp;is&nbsp;to&nbsp;compile&nbsp;a&nbsp;seleciton&nbsp;of&nbsp;edge&nbsp;detect&nbsp;<br>
+methods&nbsp;to&nbsp;be&nbsp;used&nbsp;on&nbsp;PIL&nbsp;Images.&nbsp;This&nbsp;is&nbsp;very&nbsp;much&nbsp;a&nbsp;WIP&nbsp;module&nbsp;and&nbsp;will<br>
+be&nbsp;added&nbsp;to&nbsp;as&nbsp;more&nbsp;compatibility&nbsp;is&nbsp;introduced&nbsp;as&nbsp;well&nbsp;as&nbsp;more&nbsp;features.<br>
+&nbsp;<br>
+Currently,&nbsp;the&nbsp;only&nbsp;edge&nbsp;detect&nbsp;method&nbsp;that&nbsp;has&nbsp;been&nbsp;implemented&nbsp;is&nbsp;Canny<br>
+Edge&nbsp;Detect.&nbsp;However,&nbsp;since&nbsp;this&nbsp;is&nbsp;currently&nbsp;the&nbsp;best&nbsp;approach&nbsp;to&nbsp;edge<br>
+detection&nbsp;so&nbsp;few&nbsp;additions&nbsp;will&nbsp;be&nbsp;made&nbsp;to&nbsp;this&nbsp;module&nbsp;overtime.&nbsp;The&nbsp;<br>
+inclusion&nbsp;of&nbsp;different&nbsp;approaches&nbsp;to&nbsp;the&nbsp;Canny&nbsp;Edge&nbsp;Detect&nbsp;method&nbsp;may&nbsp;be&nbsp;<br>
+included&nbsp;over&nbsp;time.<br>
+&nbsp;<br>
+Since&nbsp;the&nbsp;project&nbsp;needed&nbsp;the&nbsp;use&nbsp;of&nbsp;2D&nbsp;arrays&nbsp;for&nbsp;comparing&nbsp;pixels&nbsp;and&nbsp;<br>
+since&nbsp;the&nbsp;Linux&nbsp;machines&nbsp;at&nbsp;Bournemouth&nbsp;University&nbsp;don't&nbsp;have&nbsp;Numpy&nbsp;and<br>
+Scipy&nbsp;installed,&nbsp;I&nbsp;implemented&nbsp;a&nbsp;technique&nbsp;without&nbsp;installing&nbsp;these&nbsp;modules&nbsp;<br>
+using&nbsp;nested&nbsp;dictionaries.&nbsp;The&nbsp;2D&nbsp;arrays&nbsp;used&nbsp;in&nbsp;this&nbsp;module&nbsp;are&nbsp;created&nbsp;<br>
+using&nbsp;<a href="#-dict_array">dict_array</a>()&nbsp;which,&nbsp;on&nbsp;default,&nbsp;will&nbsp;create&nbsp;a&nbsp;dictionary&nbsp;when<br>
+called.&nbsp;This&nbsp;means&nbsp;values&nbsp;can&nbsp;be&nbsp;assigned&nbsp;to&nbsp;the&nbsp;2D&nbsp;array&nbsp;without&nbsp;the<br>
+need&nbsp;for&nbsp;key&nbsp;check&nbsp;statements.&nbsp;For&nbsp;example:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;colArray&nbsp;=&nbsp;<a href="#-dict_array">dict_array</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;for&nbsp;x&nbsp;in&nbsp;xrange(1,101):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;y&nbsp;in&nbsp;xrange(1,101):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colArray[x][y]&nbsp;=&nbsp;(255*x/100,&nbsp;255*y/100,&nbsp;255*x/y/200)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;colArray[10][50]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(25,&nbsp;127,&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;<br>
+&nbsp;<br>
+Functions&nbsp;that&nbsp;are&nbsp;included&nbsp;are&nbsp;traversing&nbsp;adjacent&nbsp;pixels&nbsp;for&nbsp;linking<br>
+edge&nbsp;pixels,&nbsp;a&nbsp;Sobel&nbsp;Pixel&nbsp;Desnsity&nbsp;calculator&nbsp;which&nbsp;is&nbsp;used&nbsp;to&nbsp;calculate<br>
+the&nbsp;gradient&nbsp;of&nbsp;a&nbsp;pixel&nbsp;dependent&nbsp;on&nbsp;the&nbsp;directional&nbsp;Sobel,&nbsp;a&nbsp;find&nbsp;max&nbsp;<br>
+value&nbsp;for&nbsp;a&nbsp;dictionary&nbsp;array,&nbsp;the&nbsp;creation&nbsp;of&nbsp;a&nbsp;zeroes&nbsp;2d&nbsp;dict&nbsp;array<br>
+and&nbsp;the&nbsp;actual&nbsp;Canny&nbsp;Edge&nbsp;Detection&nbsp;function&nbsp;itself.<br>
+&nbsp;<br>
+Here&nbsp;is&nbsp;an&nbsp;example&nbsp;of&nbsp;how&nbsp;the&nbsp;Canny&nbsp;Edge&nbsp;Detect&nbsp;code&nbsp;works:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;f&nbsp;=&nbsp;'lena.png'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.open(f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fileImg&nbsp;=&nbsp;True<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;except&nbsp;IOError:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.new('RGB',&nbsp;(500,&nbsp;500))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drw&nbsp;=&nbsp;ImageDraw.Draw(img)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drw.ellipse((50,&nbsp;50,&nbsp;100,&nbsp;100),&nbsp;fill=(255,&nbsp;0,&nbsp;0))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drw.rectangle((75,75,125,125),&nbsp;fill=(255,255,0))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fileImg&nbsp;=&nbsp;False<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;if&nbsp;fileImg:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;edgImg&nbsp;=&nbsp;<a href="#-canny_edge_detection">canny_edge_detection</a>(img)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;edgImg&nbsp;=&nbsp;<a href="#-canny_edge_detection">canny_edge_detection</a>(img,&nbsp;sigma=1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;img.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;edgImg.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;<br>
+&nbsp;<br>
+To&nbsp;test/execute&nbsp;the&nbsp;examples&nbsp;in&nbsp;the&nbsp;module&nbsp;documentation&nbsp;make&nbsp;sure&nbsp;that&nbsp;<br>
+you&nbsp;have&nbsp;imported&nbsp;the&nbsp;edgeDetect&nbsp;module&nbsp;and&nbsp;do&nbsp;the&nbsp;following:<br>
+import&nbsp;doctest<br>
+nfail,&nbsp;ntests&nbsp;=&nbsp;doctest.testmod(edgeDetect)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="PIL.Image.html">PIL.Image</a><br>
+<a href="PIL.ImageDraw.html">PIL.ImageDraw</a><br>
+</td><td width="25%" valign=top><a href="PIL.ImageFilter.html">PIL.ImageFilter</a><br>
+<a href="copy.html">copy</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="PILAddons.html">PILAddons</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-canny_edge_detection"><strong>canny_edge_detection</strong></a>(img, sigma<font color="#909090">=1.3999999999999999</font>, thresHigh<font color="#909090">=0.20000000000000001</font>, thresLow<font color="#909090">=0.10000000000000001</font>, lineCol<font color="#909090">=(255, 255, 255)</font>)</dt><dd><tt>Uses&nbsp;a&nbsp;method&nbsp;of&nbsp;Canny&nbsp;Edge&nbsp;Deteciton&nbsp;to&nbsp;draw&nbsp;the&nbsp;edges&nbsp;of&nbsp;an&nbsp;image.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;[PIL&nbsp;image]&nbsp;&nbsp;&nbsp;:&nbsp;a&nbsp;PIL&nbsp;image&nbsp;object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sigma&nbsp;[float]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;the&nbsp;amount&nbsp;of&nbsp;gaussian&nbsp;blur&nbsp;applied&nbsp;to&nbsp;an&nbsp;image&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove&nbsp;the&nbsp;noise&nbsp;from&nbsp;it.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;thresHigh&nbsp;[float]&nbsp;:&nbsp;the&nbsp;higher&nbsp;threshold&nbsp;boundry&nbsp;for&nbsp;use&nbsp;with&nbsp;edge<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;normalisation&nbsp;and&nbsp;linking.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;thresLow&nbsp;[float]&nbsp;&nbsp;:&nbsp;the&nbsp;lower&nbsp;threshold&nbsp;boundry&nbsp;for&nbsp;use&nbsp;with&nbsp;edge<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;normalisation&nbsp;and&nbsp;linking.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lineCol&nbsp;[colour]&nbsp;&nbsp;:&nbsp;a&nbsp;valid&nbsp;PIL&nbsp;colour.&nbsp;Most&nbsp;common&nbsp;format&nbsp;is&nbsp;a&nbsp;3-tuple<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RGB&nbsp;colour.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;an&nbsp;RGBA&nbsp;image&nbsp;with&nbsp;a&nbsp;black&nbsp;background&nbsp;and&nbsp;the&nbsp;edges&nbsp;of&nbsp;the&nbsp;image<br>
+&nbsp;&nbsp;&nbsp;&nbsp;drawn&nbsp;in&nbsp;the&nbsp;colour&nbsp;'lineCol'&nbsp;created&nbsp;from&nbsp;the&nbsp;image&nbsp;'img'.</tt></dd></dl>
+ <dl><dt><a name="-dict_2darray_max_size"><strong>dict_2darray_max_size</strong></a>(dArray)</dt><dd><tt>Finds&nbsp;the&nbsp;max&nbsp;value&nbsp;from&nbsp;a&nbsp;2d&nbsp;dict&nbsp;array<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dArray&nbsp;[2d&nbsp;array]&nbsp;:&nbsp;A&nbsp;2d&nbsp;dict&nbsp;array&nbsp;containing&nbsp;the&nbsp;colour&nbsp;values&nbsp;for&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;maximum&nbsp;value&nbsp;from&nbsp;within&nbsp;the&nbsp;2d&nbsp;array</tt></dd></dl>
+ <dl><dt><a name="-dict_array"><strong>dict_array</strong></a>()</dt><dd><tt>Creates&nbsp;a&nbsp;2d&nbsp;dictionary&nbsp;array<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;default&nbsp;dictionary&nbsp;object&nbsp;which&nbsp;creates&nbsp;new&nbsp;dictionaries&nbsp;when<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;value&nbsp;is&nbsp;assigned&nbsp;to&nbsp;a&nbsp;key&nbsp;by&nbsp;default.&nbsp;This&nbsp;allows&nbsp;for&nbsp;multiple&nbsp;key<br>
+&nbsp;&nbsp;&nbsp;&nbsp;assignments&nbsp;without&nbsp;checking&nbsp;and&nbsp;creating&nbsp;keys.</tt></dd></dl>
+ <dl><dt><a name="-img_from_dict_2darry"><strong>img_from_dict_2darry</strong></a>(dArray, mode<font color="#909090">='RGB'</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;PIL&nbsp;image&nbsp;from&nbsp;a&nbsp;2d&nbsp;dict&nbsp;array.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dArray&nbsp;[2d&nbsp;array]&nbsp;:&nbsp;A&nbsp;2d&nbsp;dict&nbsp;array&nbsp;containing&nbsp;the&nbsp;colour&nbsp;values&nbsp;for&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mode&nbsp;[string]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;PIL&nbsp;colour&nbsp;mode&nbsp;for&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;PIL&nbsp;image&nbsp;with&nbsp;the&nbsp;colours&nbsp;values&nbsp;from&nbsp;'dArray'&nbsp;in&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;colour&nbsp;mode.</tt></dd></dl>
+ <dl><dt><a name="-max_2d_dict_array"><strong>max_2d_dict_array</strong></a>(dArray)</dt><dd><tt>Finds&nbsp;the&nbsp;maximum&nbsp;value&nbsp;from&nbsp;a&nbsp;2D&nbsp;dict&nbsp;array.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dArray&nbsp;[2d&nbsp;array]&nbsp;:&nbsp;The&nbsp;2D&nbsp;array&nbsp;to&nbsp;which&nbsp;the&nbsp;maximum&nbsp;value&nbsp;is&nbsp;to&nbsp;be&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found&nbsp;from.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;maximum&nbsp;value&nbsp;contained&nbsp;within&nbsp;the&nbsp;2d&nbsp;dict&nbsp;array.</tt></dd></dl>
+ <dl><dt><a name="-min_2d_dict_array"><strong>min_2d_dict_array</strong></a>(dArray)</dt><dd><tt>Finds&nbsp;the&nbsp;minumum&nbsp;value&nbsp;from&nbsp;a&nbsp;2D&nbsp;dict&nbsp;array.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dArray&nbsp;[2d&nbsp;array]&nbsp;:&nbsp;The&nbsp;2D&nbsp;array&nbsp;to&nbsp;which&nbsp;the&nbsp;minimum&nbsp;value&nbsp;is&nbsp;to&nbsp;be&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found&nbsp;from.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;minimum&nbsp;value&nbsp;contained&nbsp;within&nbsp;the&nbsp;2d&nbsp;dict&nbsp;array.</tt></dd></dl>
+ <dl><dt><a name="-round_degrees"><strong>round_degrees</strong></a>(deg)</dt><dd><tt>Rounds&nbsp;the&nbsp;degrees&nbsp;to&nbsp;be&nbsp;either&nbsp;horizontal,&nbsp;vertical&nbsp;or&nbsp;diagonal.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;deg&nbsp;[float][int]&nbsp;:&nbsp;The&nbsp;degrees&nbsp;of&nbsp;the&nbsp;angle&nbsp;of&nbsp;the&nbsp;line.&nbsp;Must&nbsp;be&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;above&nbsp;0&nbsp;and&nbsp;range&nbsp;from&nbsp;0&nbsp;to&nbsp;360.<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;degrees&nbsp;rounded&nbsp;to&nbsp;either&nbsp;(0,45,90,135),&nbsp;depending&nbsp;on&nbsp;what<br>
+&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;closest.</tt></dd></dl>
+ <dl><dt><a name="-sobel_pixel_density"><strong>sobel_pixel_density</strong></a>(imgPix, x, y, sobel)</dt><dd><tt>Calculates&nbsp;the&nbsp;pixel&nbsp;density/gradient&nbsp;in&nbsp;a&nbsp;3&nbsp;x&nbsp;3&nbsp;square&nbsp;using&nbsp;the&nbsp;<br>
+specified&nbsp;by&nbsp;the&nbsp;sobel.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;imgPix&nbsp;[PIL&nbsp;Pixel]&nbsp;&nbsp;:&nbsp;A&nbsp;PIL&nbsp;Pixel&nbsp;Access&nbsp;object.&nbsp;Created&nbsp;using&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Image.load()&nbsp;on&nbsp;a&nbsp;valid&nbsp;PIL&nbsp;image&nbsp;object.&nbsp;Used&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get&nbsp;the&nbsp;colour&nbsp;at&nbsp;each&nbsp;pixel&nbsp;position.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;X-coordinate&nbsp;of&nbsp;the&nbsp;pixel&nbsp;which&nbsp;the&nbsp;centre&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;the&nbsp;3&nbsp;x&nbsp;3&nbsp;sample&nbsp;will&nbsp;be&nbsp;taken&nbsp;from.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;Y-coordinate&nbsp;of&nbsp;the&nbsp;pixel&nbsp;which&nbsp;the&nbsp;centre&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;the&nbsp;3&nbsp;x&nbsp;2&nbsp;sample&nbsp;will&nbsp;be&nbsp;taken&nbsp;from.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sobel&nbsp;[list][tuple]&nbsp;:&nbsp;The&nbsp;sobel&nbsp;used&nbsp;to&nbsp;calculate&nbsp;the&nbsp;gradient.&nbsp;These<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;are&nbsp;stored&nbsp;as&nbsp;'SOBEL_X'&nbsp;and&nbsp;'SOBEL_Y'&nbsp;in&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;module.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Either&nbsp;calculates&nbsp;the&nbsp;Y&nbsp;or&nbsp;X&nbsp;gradient&nbsp;for&nbsp;the&nbsp;pixel&nbsp;(dependent&nbsp;on&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sobel&nbsp;used)&nbsp;and&nbsp;returns&nbsp;the&nbsp;value.</tt></dd></dl>
+ <dl><dt><a name="-traverse"><strong>traverse</strong></a>(coX, coY, edgH, edgL, lineCol)</dt><dd><tt>Used&nbsp;to&nbsp;check&nbsp;all&nbsp;the&nbsp;adjacent&nbsp;pixels&nbsp;of&nbsp;an&nbsp;assured&nbsp;edge&nbsp;pixel&nbsp;and&nbsp;check&nbsp;<br>
+if&nbsp;the&nbsp;pixel&nbsp;from&nbsp;the&nbsp;lower&nbsp;threshold&nbsp;image&nbsp;is&nbsp;an&nbsp;edge,&nbsp;and&nbsp;set&nbsp;that&nbsp;pixel<br>
+to&nbsp;be&nbsp;an&nbsp;edge.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;coX&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Coordinate-X&nbsp;for&nbsp;the&nbsp;pixel&nbsp;on&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;coY&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Coordinate-Y&nbsp;for&nbsp;the&nbsp;pixel&nbsp;on&nbsp;the&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edgeH&nbsp;[2d&nbsp;array]&nbsp;:&nbsp;The&nbsp;2d&nbsp;array&nbsp;for&nbsp;the&nbsp;higher&nbsp;threshold&nbsp;edge&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edgeL&nbsp;[2d&nbsp;array]&nbsp;:&nbsp;The&nbsp;2d&nbsp;array&nbsp;for&nbsp;the&nbsp;lower&nbsp;threshold&nbsp;edge&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lineCol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;line&nbsp;colour&nbsp;for&nbsp;the&nbsp;edges.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Mark&nbsp;as&nbsp;valid&nbsp;edge&nbsp;pixels&nbsp;all&nbsp;the&nbsp;weak&nbsp;pixels&nbsp;in&nbsp;'edgeL'&nbsp;that&nbsp;are&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;adjacent&nbsp;to&nbsp;the&nbsp;pixel&nbsp;at&nbsp;position&nbsp;[x,y]&nbsp;and&nbsp;are&nbsp;not&nbsp;a&nbsp;valid&nbsp;edge&nbsp;in<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'edgeH'.</tt></dd></dl>
+ <dl><dt><a name="-zeroes_dict_2darray"><strong>zeroes_dict_2darray</strong></a>(width, height, value<font color="#909090">=0</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;complete&nbsp;2d&nbsp;dict&nbsp;array&nbsp;filled&nbsp;with&nbsp;zeroes&nbsp;or&nbsp;the&nbsp;set&nbsp;value<br>
+'value'.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;width&nbsp;[int]&nbsp;&nbsp;:&nbsp;The&nbsp;width&nbsp;of&nbsp;the&nbsp;image&nbsp;or&nbsp;number&nbsp;of&nbsp;pixels&nbsp;for&nbsp;the&nbsp;width.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;height&nbsp;[int]&nbsp;:&nbsp;The&nbsp;height&nbsp;of&nbsp;the&nbsp;image&nbsp;or&nbsp;number&nbsp;of&nbsp;pixels&nbsp;for&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;[any]&nbsp;&nbsp;:&nbsp;This&nbsp;will&nbsp;fill&nbsp;the&nbsp;entire&nbsp;2d&nbsp;array&nbsp;with&nbsp;this&nbsp;value&nbsp;as&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;default&nbsp;value.&nbsp;The&nbsp;default&nbsp;is&nbsp;zero.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;complete&nbsp;2d&nbsp;dict&nbsp;array&nbsp;filled&nbsp;with&nbsp;the&nbsp;value&nbsp;in&nbsp;'value'.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>SOBEL_X</strong> = ((-1, 0, 1), (-2, 0, 2), (-1, 0, 1))<br>
+<strong>SOBEL_Y</strong> = ((-1, -2, -1), (0, 0, 0), (1, 2, 1))</td></tr></table>
+</body></html>

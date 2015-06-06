@@ -1,0 +1,110 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module halftoning</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>halftoning</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///G:/lichtenstein%20art%20final/01_sourcecode/halftoning.py">g:\lichtenstein art final\01_sourcecode\halftoning.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;containing&nbsp;halftoning&nbsp;methods&nbsp;for&nbsp;PIL&nbsp;images.<br>
+&nbsp;<br>
+The&nbsp;idea&nbsp;behind&nbsp;this&nbsp;module&nbsp;is&nbsp;to&nbsp;contain&nbsp;the&nbsp;functions&nbsp;and&nbsp;related&nbsp;options<br>
+for&nbsp;halftoning&nbsp;PIL&nbsp;images.&nbsp;This&nbsp;is&nbsp;a&nbsp;WIP&nbsp;module&nbsp;and&nbsp;I&nbsp;plan&nbsp;to&nbsp;add&nbsp;more&nbsp;<br>
+features&nbsp;to&nbsp;it&nbsp;over&nbsp;time.<br>
+&nbsp;<br>
+Currently,&nbsp;the&nbsp;halftoning&nbsp;function&nbsp;has&nbsp;an&nbsp;average&nbsp;colour&nbsp;option&nbsp;using&nbsp;the<br>
+'AVERAGE_COLOUR'&nbsp;variable&nbsp;in&nbsp;the&nbsp;module.&nbsp;This&nbsp;only&nbsp;works&nbsp;on&nbsp;the&nbsp;colour&nbsp;of<br>
+the&nbsp;circles&nbsp;drawn&nbsp;and&nbsp;not&nbsp;the&nbsp;background&nbsp;since&nbsp;you&nbsp;can't&nbsp;take&nbsp;an&nbsp;average<br>
+colour&nbsp;for&nbsp;the&nbsp;background&nbsp;of&nbsp;the&nbsp;circles.<br>
+&nbsp;<br>
+Functions&nbsp;that&nbsp;are&nbsp;included&nbsp;are&nbsp;the&nbsp;halftoning&nbsp;function&nbsp;itself&nbsp;which&nbsp;does&nbsp;<br>
+the&nbsp;halftoning&nbsp;process.<br>
+&nbsp;<br>
+Here&nbsp;is&nbsp;an&nbsp;example&nbsp;of&nbsp;how&nbsp;the&nbsp;Halftoning&nbsp;code&nbsp;works:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;f&nbsp;=&nbsp;'lena.png'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.open(f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;except&nbsp;IOError:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;Image.new('RGB',&nbsp;(500,500))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pix&nbsp;=&nbsp;img.load()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colRatio&nbsp;=&nbsp;255.0/img.size[0]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;x&nbsp;in&nbsp;xrange(img.size[0]):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;y&nbsp;in&nbsp;xrange(img.size[1]):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pix[x,y]&nbsp;=&nbsp;(int(x*colRatio),0,int(y*colRatio))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfBW&nbsp;=&nbsp;<a href="#-halftoning">halftoning</a>(img,&nbsp;15,&nbsp;1,&nbsp;4,&nbsp;BLACK_ON_WHITE)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfBW.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfWB&nbsp;=&nbsp;<a href="#-halftoning">halftoning</a>(img,&nbsp;15,&nbsp;1,&nbsp;4,&nbsp;WHITE_ON_BLACK)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfWB.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfAVGW&nbsp;=&nbsp;<a href="#-halftoning">halftoning</a>(img,&nbsp;15,&nbsp;1.5,&nbsp;4,&nbsp;AVERAGE_COLOUR_ON_WHITE)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfAVGW.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfAVGB&nbsp;=&nbsp;<a href="#-halftoning">halftoning</a>(img,&nbsp;15,&nbsp;0.5,&nbsp;4,&nbsp;AVERAGE_COLOUR_ON_BLACK)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfAVGB.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfCust&nbsp;=&nbsp;<a href="#-halftoning">halftoning</a>(img,&nbsp;5,&nbsp;1,&nbsp;4,&nbsp;(AVERAGE_COLOUR,&nbsp;(36,103,145)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;halfCust.show(command='display')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;<br>
+&nbsp;<br>
+To&nbsp;test/execute&nbsp;the&nbsp;examples&nbsp;in&nbsp;the&nbsp;module&nbsp;documentation&nbsp;make&nbsp;sure&nbsp;that&nbsp;<br>
+you&nbsp;have&nbsp;imported&nbsp;the&nbsp;halftoning&nbsp;module&nbsp;and&nbsp;do&nbsp;the&nbsp;following:<br>
+import&nbsp;doctest<br>
+nfail,&nbsp;ntests&nbsp;=&nbsp;doctest.testmod(halftoning)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="PIL.Image.html">PIL.Image</a><br>
+</td><td width="25%" valign=top><a href="colour.html">colour</a><br>
+</td><td width="25%" valign=top><a href="PILAddons.html">PILAddons</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-halftoning"><strong>halftoning</strong></a>(img, box, cRatio<font color="#909090">=1</font>, aalias<font color="#909090">=4</font>, colour<font color="#909090">=((0, 0, 0), (255, 255, 255))</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;halftoned&nbsp;PIL&nbsp;Image.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;[PIL&nbsp;Image]&nbsp;:&nbsp;This&nbsp;is&nbsp;a&nbsp;PIL&nbsp;image&nbsp;object.&nbsp;The&nbsp;image&nbsp;will&nbsp;be&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;converted&nbsp;to&nbsp;an&nbsp;RGB&nbsp;image.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;box&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;width&nbsp;and&nbsp;height&nbsp;of&nbsp;the&nbsp;box&nbsp;area&nbsp;which&nbsp;will&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled&nbsp;for&nbsp;its&nbsp;luminosity&nbsp;and&nbsp;a&nbsp;circle&nbsp;created&nbsp;in&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;its&nbsp;place.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cRatio&nbsp;[float]&nbsp;&nbsp;:&nbsp;The&nbsp;circle&nbsp;ratio&nbsp;for&nbsp;the&nbsp;image.&nbsp;If&nbsp;this&nbsp;value&nbsp;is&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;above&nbsp;1,&nbsp;the&nbsp;the&nbsp;circles&nbsp;drawn&nbsp;will&nbsp;be&nbsp;scaled&nbsp;up&nbsp;to&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlap&nbsp;each&nbsp;other&nbsp;my&nbsp;that&nbsp;ratio&nbsp;amount.&nbsp;The&nbsp;same<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;happen&nbsp;for&nbsp;values&nbsp;below&nbsp;1&nbsp;by&nbsp;scaling&nbsp;down.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aalias&nbsp;[int]&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;anti-alias&nbsp;amount&nbsp;for&nbsp;the&nbsp;edges&nbsp;of&nbsp;the&nbsp;circles<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drawn.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colour&nbsp;[tuple]&nbsp;&nbsp;:&nbsp;A&nbsp;2-tuple&nbsp;containing&nbsp;the&nbsp;foreground&nbsp;colour&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background&nbsp;colour&nbsp;in&nbsp;the&nbsp;format&nbsp;(foreground,background).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Currently&nbsp;accepts&nbsp;RGB&nbsp;colours&nbsp;and&nbsp;'AVERAGE_COLOUR'&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;foreground.&nbsp;Foreground&nbsp;is&nbsp;the&nbsp;colour&nbsp;of&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cirlces&nbsp;that&nbsp;will&nbsp;be&nbsp;drawn.<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Draws&nbsp;circles&nbsp;within&nbsp;relative&nbsp;size&nbsp;dependent&nbsp;on&nbsp;the&nbsp;luminosity&nbsp;of&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pixels&nbsp;in&nbsp;the&nbsp;area&nbsp;'box',&nbsp;and&nbsp;also&nbsp;dependent&nbsp;on&nbsp;the&nbsp;circle&nbsp;ratio&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'cRatio'&nbsp;and&nbsp;the&nbsp;colour&nbsp;of&nbsp;the&nbsp;circles&nbsp;and&nbsp;background&nbsp;from&nbsp;'colour'&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;amount&nbsp;of&nbsp;anti-alias&nbsp;from&nbsp;'aalias'.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>AVERAGE_COLOUR</strong> = 'AVERAGE_COLOUR'<br>
+<strong>AVERAGE_COLOUR_ON_BLACK</strong> = ('AVERAGE_COLOUR', (0, 0, 0))<br>
+<strong>AVERAGE_COLOUR_ON_WHITE</strong> = ('AVERAGE_COLOUR', (255, 255, 255))<br>
+<strong>BLACK_ON_WHITE</strong> = ((0, 0, 0), (255, 255, 255))<br>
+<strong>WHITE_ON_BLACK</strong> = ((255, 255, 255), (0, 0, 0))</td></tr></table>
+</body></html>

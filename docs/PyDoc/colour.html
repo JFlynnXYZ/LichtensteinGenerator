@@ -1,0 +1,141 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module colour</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>colour</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///G:/lichtenstein%20art%20final/01_sourcecode/colour.py">g:\lichtenstein art final\01_sourcecode\colour.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;containing&nbsp;common&nbsp;colour&nbsp;related&nbsp;tasks.&nbsp;This&nbsp;module&nbsp;is&nbsp;frequently&nbsp;<br>
+used&nbsp;in&nbsp;conjunction&nbsp;with&nbsp;PIL&nbsp;projects.<br>
+&nbsp;<br>
+The&nbsp;idea&nbsp;behind&nbsp;this&nbsp;module&nbsp;is&nbsp;to&nbsp;contain&nbsp;colour&nbsp;related&nbsp;functions&nbsp;which&nbsp;<br>
+are&nbsp;used&nbsp;when&nbsp;creating&nbsp;images.&nbsp;This&nbsp;is&nbsp;very&nbsp;much&nbsp;a&nbsp;WIP&nbsp;module&nbsp;and&nbsp;will<br>
+be&nbsp;added&nbsp;to&nbsp;as&nbsp;I&nbsp;implement&nbsp;more&nbsp;features&nbsp;necessary&nbsp;for&nbsp;any&nbsp;image&nbsp;or&nbsp;PIL<br>
+related&nbsp;projects.<br>
+&nbsp;<br>
+Currently,&nbsp;most&nbsp;of&nbsp;the&nbsp;functions&nbsp;in&nbsp;this&nbsp;module&nbsp;work&nbsp;with&nbsp;RGB&nbsp;colours&nbsp;and<br>
+not&nbsp;any&nbsp;other&nbsp;types.&nbsp;This&nbsp;will&nbsp;be&nbsp;a&nbsp;feature&nbsp;I&nbsp;will&nbsp;add&nbsp;to&nbsp;the&nbsp;module&nbsp;as&nbsp;<br>
+it&nbsp;becomes&nbsp;necessary,&nbsp;adding&nbsp;HSV,&nbsp;RGBA,&nbsp;HEX&nbsp;and&nbsp;PIL&nbsp;worded&nbsp;colours.&nbsp;The<br>
+functions&nbsp;included&nbsp;in&nbsp;the&nbsp;module&nbsp;are&nbsp;for&nbsp;checking&nbsp;if&nbsp;an&nbsp;RGB&nbsp;value&nbsp;is&nbsp;valid,<br>
+to&nbsp;unflatten&nbsp;a&nbsp;list&nbsp;of&nbsp;RGB&nbsp;values&nbsp;as&nbsp;well&nbsp;as&nbsp;flatten&nbsp;them,&nbsp;to&nbsp;calculate&nbsp;the<br>
+luminosity&nbsp;of&nbsp;a&nbsp;colour&nbsp;from&nbsp;it's&nbsp;RGB&nbsp;elements,&nbsp;and&nbsp;also&nbsp;average&nbsp;an&nbsp;a&nbsp;list&nbsp;<br>
+of&nbsp;RGB&nbsp;colours.<br>
+&nbsp;<br>
+Here&nbsp;are&nbsp;some&nbsp;examples&nbsp;of&nbsp;how&nbsp;the&nbsp;code&nbsp;works:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;valRGB&nbsp;=&nbsp;(23,&nbsp;234,&nbsp;120)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-luminosity">luminosity</a>(valRGB)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;180.91059999999999<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;invRGB&nbsp;=&nbsp;(256,90,123)&nbsp;#Colours&nbsp;only&nbsp;go&nbsp;up&nbsp;to&nbsp;255<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;invRGB2&nbsp;=&nbsp;(9,0,23.66)&nbsp;#RGB&nbsp;colours&nbsp;can't&nbsp;be&nbsp;float&nbsp;values<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;invRGB3&nbsp;=&nbsp;"(50,100,24)"&nbsp;#String&nbsp;value.&nbsp;Only&nbsp;accept&nbsp;list&nbsp;or&nbsp;tuple<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;invRGB4&nbsp;=&nbsp;(21,200,125,78)&nbsp;#Contains&nbsp;4&nbsp;values,&nbsp;only&nbsp;3&nbsp;in&nbsp;RGB<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;for&nbsp;rgb&nbsp;in&nbsp;(valRGB,invRGB,invRGB2,invRGB3,invRGB4):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#-rgb_check">rgb_check</a>(rgb)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except&nbsp;ValueError&nbsp;as&nbsp;e:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.args[0]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"'(256,&nbsp;90,&nbsp;123)'&nbsp;can&nbsp;only&nbsp;have&nbsp;an&nbsp;int&nbsp;value&nbsp;between&nbsp;0&nbsp;to&nbsp;255"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"'(9,&nbsp;0,&nbsp;23.66)'&nbsp;rgb&nbsp;can&nbsp;only&nbsp;be&nbsp;integer&nbsp;values,&nbsp;not&nbsp;floats"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"'(50,100,24)'&nbsp;is&nbsp;not&nbsp;a&nbsp;list&nbsp;or&nbsp;tuple"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"'(21,&nbsp;200,&nbsp;125,&nbsp;78)'&nbsp;is&nbsp;not&nbsp;3&nbsp;numbers&nbsp;long"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;colours&nbsp;=&nbsp;(136,234,90),(32,9,21),(40,39,21),(20,255,78)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;flatCols&nbsp;=&nbsp;<a href="#-rgb_flatten">rgb_flatten</a>(colours)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;flatCols<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[136,&nbsp;234,&nbsp;90,&nbsp;32,&nbsp;9,&nbsp;21,&nbsp;40,&nbsp;39,&nbsp;21,&nbsp;20,&nbsp;255,&nbsp;78]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-rgb_unflatten">rgb_unflatten</a>(flatCols)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[(136,&nbsp;234,&nbsp;90),&nbsp;(32,&nbsp;9,&nbsp;21),&nbsp;(40,&nbsp;39,&nbsp;21),&nbsp;(20,&nbsp;255,&nbsp;78)]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-average_colours">average_colours</a>(colours)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(57,&nbsp;134,&nbsp;52)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+To&nbsp;test/execute&nbsp;the&nbsp;examples&nbsp;in&nbsp;the&nbsp;module&nbsp;documentation&nbsp;make&nbsp;sure&nbsp;that&nbsp;<br>
+you&nbsp;have&nbsp;imported&nbsp;the&nbsp;colour&nbsp;module&nbsp;and&nbsp;do&nbsp;the&nbsp;following:<br>
+import&nbsp;doctest<br>
+nfail,&nbsp;ntests&nbsp;=&nbsp;doctest.testmod(colour)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="struct.html">struct</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-average_colours"><strong>average_colours</strong></a>(colList)</dt><dd><tt>Calculates&nbsp;the&nbsp;average&nbsp;colour&nbsp;from&nbsp;a&nbsp;list&nbsp;of&nbsp;RGB&nbsp;colours.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colList&nbsp;[tuple][list]&nbsp;:&nbsp;A&nbsp;list&nbsp;of&nbsp;3&nbsp;tuple&nbsp;RGB&nbsp;values.&nbsp;Each&nbsp;of&nbsp;these<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RGB&nbsp;values&nbsp;will&nbsp;be&nbsp;checked&nbsp;when&nbsp;the&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;run.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;average&nbsp;RGB&nbsp;value&nbsp;as&nbsp;a&nbsp;3&nbsp;tuple&nbsp;value&nbsp;in&nbsp;the&nbsp;format&nbsp;(R,G,B).</tt></dd></dl>
+ <dl><dt><a name="-hex2rgb"><strong>hex2rgb</strong></a>(hx)</dt><dd><tt>Used&nbsp;to&nbsp;convert&nbsp;a&nbsp;string&nbsp;HEX&nbsp;colour&nbsp;to&nbsp;RGB&nbsp;format.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hx&nbsp;[str]&nbsp;:&nbsp;The&nbsp;HEX&nbsp;colour&nbsp;code.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;RGB&nbsp;colours&nbsp;in&nbsp;a&nbsp;tuple&nbsp;with&nbsp;the&nbsp;values&nbsp;like&nbsp;(R,G,B).</tt></dd></dl>
+ <dl><dt><a name="-luminosity"><strong>luminosity</strong></a>(rgb, rcoeff<font color="#909090">=0.21260000000000001</font>, gcoeff<font color="#909090">=0.71519999999999995</font>, bcoeff<font color="#909090">=0.0722</font>)</dt><dd><tt>Calculates&nbsp;the&nbsp;Luminosity&nbsp;of&nbsp;an&nbsp;RGB&nbsp;value&nbsp;dependent&nbsp;on&nbsp;the&nbsp;RGB&nbsp;<br>
+coefficiants.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rgb&nbsp;[list][tuple][int]&nbsp;:&nbsp;Can&nbsp;either&nbsp;be&nbsp;an&nbsp;RGB&nbsp;value&nbsp;or&nbsp;a&nbsp;single&nbsp;int&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;representing&nbsp;a&nbsp;3&nbsp;tuple&nbsp;greyscale&nbsp;colour.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rcoeff&nbsp;[float]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;Red&nbsp;channel&nbsp;luminosity&nbsp;colour&nbsp;coefficient.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gcoeff&nbsp;[float]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;Green&nbsp;channel&nbsp;luminosity&nbsp;colour&nbsp;coefficient.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bcoeff&nbsp;[float]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;The&nbsp;Blue&nbsp;channel&nbsp;luminosity&nbsp;colour&nbsp;coefficient.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;float&nbsp;of&nbsp;the&nbsp;luminosity&nbsp;of&nbsp;the&nbsp;colour,&nbsp;ranging&nbsp;from&nbsp;0&nbsp;to&nbsp;255.</tt></dd></dl>
+ <dl><dt><a name="-rgb2hex"><strong>rgb2hex</strong></a>(r, g, b)</dt><dd><tt>Used&nbsp;to&nbsp;convert&nbsp;an&nbsp;RGB&nbsp;colour&nbsp;to&nbsp;HEX&nbsp;format&nbsp;for&nbsp;use&nbsp;with&nbsp;Tkinter.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;[int]&nbsp;:&nbsp;The&nbsp;value&nbsp;of&nbsp;the&nbsp;red&nbsp;channel.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;g&nbsp;[int]&nbsp;:&nbsp;The&nbsp;value&nbsp;of&nbsp;the&nbsp;green&nbsp;channel.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;[int]&nbsp;:&nbsp;The&nbsp;value&nbsp;of&nbsp;the&nbsp;blue&nbsp;channel.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;a&nbsp;string&nbsp;HEX&nbsp;colour&nbsp;code&nbsp;for&nbsp;the&nbsp;RGB&nbsp;colour.</tt></dd></dl>
+ <dl><dt><a name="-rgb_check"><strong>rgb_check</strong></a>(rgb)</dt><dd><tt>Used&nbsp;to&nbsp;check&nbsp;if&nbsp;the&nbsp;value&nbsp;'rgb'&nbsp;is&nbsp;a&nbsp;valid&nbsp;RGB&nbsp;value.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rgb&nbsp;[tuple][list][int]&nbsp;:&nbsp;A&nbsp;three&nbsp;tuple&nbsp;list&nbsp;containing&nbsp;the&nbsp;Red,&nbsp;Green&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;Blue&nbsp;values&nbsp;of&nbsp;the&nbsp;RGB&nbsp;colour.&nbsp;Also<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;accepts&nbsp;a&nbsp;single&nbsp;int&nbsp;value&nbsp;for&nbsp;greyscale<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colours,&nbsp;assuming&nbsp;that&nbsp;all&nbsp;the&nbsp;RGB&nbsp;values<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;are&nbsp;that&nbsp;one&nbsp;value.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Will&nbsp;either&nbsp;raise&nbsp;a&nbsp;ValueError,&nbsp;explaining&nbsp;the&nbsp;problem&nbsp;with&nbsp;the&nbsp;RGB<br>
+&nbsp;&nbsp;&nbsp;&nbsp;colour&nbsp;or&nbsp;will&nbsp;pass&nbsp;with&nbsp;no&nbsp;raised&nbsp;error.</tt></dd></dl>
+ <dl><dt><a name="-rgb_flatten"><strong>rgb_flatten</strong></a>(rgbCols)</dt><dd><tt>Converts&nbsp;a&nbsp;list&nbsp;of&nbsp;grouped&nbsp;RGB&nbsp;values&nbsp;into&nbsp;a&nbsp;single&nbsp;list&nbsp;of&nbsp;RGB&nbsp;values.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rgbCols&nbsp;[list][tuple]&nbsp;:&nbsp;A&nbsp;list&nbsp;of&nbsp;grouped,&nbsp;3&nbsp;tuple&nbsp;RGB&nbsp;values.<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Separates&nbsp;every&nbsp;RGB&nbsp;value&nbsp;into&nbsp;a&nbsp;single&nbsp;list&nbsp;of&nbsp;RGB&nbsp;values.</tt></dd></dl>
+ <dl><dt><a name="-rgb_unflatten"><strong>rgb_unflatten</strong></a>(rgbCols)</dt><dd><tt>Converts&nbsp;a&nbsp;list&nbsp;of&nbsp;separated&nbsp;RGB&nbsp;values&nbsp;into&nbsp;a&nbsp;3&nbsp;tuple&nbsp;groups&nbsp;of&nbsp;(R,G,B)<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rgbCols&nbsp;[list][tuple]&nbsp;:&nbsp;A&nbsp;list&nbsp;of&nbsp;separate&nbsp;R,G,B&nbsp;values&nbsp;all&nbsp;being&nbsp;ints.<br>
+&nbsp;<br>
+On&nbsp;Exit:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Combines&nbsp;and&nbsp;groups&nbsp;every&nbsp;3&nbsp;values&nbsp;into&nbsp;it's&nbsp;own&nbsp;tuple&nbsp;and&nbsp;returns&nbsp;a&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;complete&nbsp;list&nbsp;of&nbsp;grouped&nbsp;RGB&nbsp;values.</tt></dd></dl>
+</td></tr></table>
+</body></html>
