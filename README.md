@@ -7,7 +7,6 @@ Lichtenstien Generator is as it says: a generator of Roy Lictenstein style art f
   - You supplying an image and loading it into the program
   - Adjusting the options in the interface to your desired requirements
   - Generating the new image and saving the output
-  - 
   
 ### Version
 1.0.0
