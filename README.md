@@ -24,7 +24,7 @@ FBAlbumDownloader uses a only one additional module to work properly:
 To install the program, all you need is Python 2.7.9 installed and Pillow correctly installed on your system. Then, all you need to do is run ```LichtensteinGenerator.py``` found in the root of the Git directory.
 
 ### How to Use
-To use the program, simply open an image as requested on start-up. This will load the image into the program. You can then proceed to press the Generate button in the bottom right to create the output. Depending on the size of the image this may take a while. Once the generation is complete you are able to save the output by pressing Save in the bottom right. You can also cycle between the original and result using the tabs in the top left.
+To use the program, simply open an image as requested on start-up. This will load the image into the program. You can then proceed to press the Generate button in the bottom right to create the output. Depending on the size of the image this may take a while. Once the generation is complete you are able to save the output by pressing Save in the bottom right. You can also cycle between the original and the generated result using the tabs in the top left.
 
 For more detailed instructions, see https://github.com/JFDesigner/LichtensteinGenerator/blob/master/docs/UserManual.pdf
 
