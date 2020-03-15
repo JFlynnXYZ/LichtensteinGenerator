@@ -1,6 +1,6 @@
 # Lichtenstein Generator
 
-![LictensteinGenerator](http://jfdesigner.co.uk/wp-content/uploads/2015/12/lichtenstein-art-generator.png "LictensteinGenerator")
+![LictensteinGenerator](docs/lichtenstein-art-generator.png "LictensteinGenerator")
 
 Lichtenstien Generator is as it says: a generator of Roy Lictenstein style art from pre-existing image. It does this by:
 
